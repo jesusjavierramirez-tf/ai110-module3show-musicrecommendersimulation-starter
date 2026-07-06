@@ -31,7 +31,6 @@ class Recommender:
 
     def recommend(self, user: UserProfile, k: int = 5) -> List[Song]:
         """Generates sorted recommendations for a specific UserProfile instance."""
-        # Mapping object style into functional execution for backend compatibility
         prefs = {
             "favorite_genre": user.favorite_genre,
             "favorite_mood": user.favorite_mood,
@@ -81,16 +80,16 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
     score = 0.0
     reasons = []
 
-    # 1. Categorical Matching
+    # 1. Categorical Matching - Updated keys to match main.py exactly
     if song.get("genre") == user_prefs.get("favorite_genre", "").lower():
-        score += 2.0
-        reasons.append("genre match (+2.0)")
+        score += 1.0
+        reasons.append("genre match (+1.0)")
         
     if song.get("mood") == user_prefs.get("favorite_mood", "").lower():
         score += 1.0
         reasons.append("mood match (+1.0)")
 
-    # 2. Vector Error Distance Checking (Bounded between 0.0 and 1.0)
+    # 2. Vector Error Distance Checking
     if "target_energy" in user_prefs and "energy" in song:
         energy_dist = abs(user_prefs["target_energy"] - song["energy"])
         energy_score = (1.0 - energy_dist) * 1.5
@@ -99,12 +98,11 @@ def score_song(user_prefs: Dict, song: Dict) -> Tuple[float, List[str]]:
 
     if "target_acousticness" in user_prefs and "acousticness" in song:
         acoustic_dist = abs(user_prefs["target_acousticness"] - song["acousticness"])
-        acoustic_score = (1.0 - acoustic_dist) * 1.0
+        acoustic_score = (1.0 - acoustic_dist) * 2.0
         score += acoustic_score
         reasons.append(f"acoustic proximity (+{acoustic_score:.2f})")
 
     return score, reasons
-
 
 def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tuple[Dict, float, str]]:
     """Evaluates, scores, ranks, and cuts off the catalog payload down to top-k choices."""
@@ -115,7 +113,6 @@ def recommend_songs(user_prefs: Dict, songs: List[Dict], k: int = 5) -> List[Tup
         explanation = ", ".join(reasons)
         scored_list.append((song, score, explanation))
     
-    # Pythonic sorting using an inline lambda criteria pointing to index 1 (the numeric score)
     ranked_list = sorted(scored_list, key=lambda item: item[1], reverse=True)
     
     return ranked_list[:k]

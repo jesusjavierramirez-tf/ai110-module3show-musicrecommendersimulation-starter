@@ -59,31 +59,35 @@ Prompts:
 
 ---
 
-## 6. Limitations and Bias 
+## Limitations and Bias Analysis
 
-Where the system struggles or behaves unfairly. 
+Our evaluation experiments exposed a clear "Filter Bubble" vulnerability rooted in categorical dominance. Because a hard string match on `favorite_genre` grants an immediate +2.0 point bonus, the system routinely creates recommendation dead-ends. 
 
-Prompts:  
-
-- Features it does not consider  
-- Genres or moods that are underrepresented  
-- Cases where the system overfits to one preference  
-- Ways the scoring might unintentionally favor some users  
+### Core Architectural Limitations:
+1. **Categorical Gatekeeping:** If a user expresses a preference for a specific genre, the engine will recommend mediocre tracks inside that genre while completely ignoring sonically perfect masterpieces from adjacent genres (e.g., passing over a serene classical ambient piece because it isn't explicitly tagged as 'lofi').
+2. **Catalog Under-Representation:** Our current dataset contains heavy clusters around Lofi and Pop. Because the engine relies entirely on matching attributes, users searching for specialized structural categories (like World or IDM) will receive recommendations containing irrelevant fallback genres simply because those tracks happened to have matching energy values.
+3. **The Conflicted Variable Flaw:** The scoring rule evaluates attributes independently. It lacks the safety guardrails to understand that a user demanding high-energy electronic music while requesting maximum acoustic values is a physical contradiction, resulting in compromised outputs.
 
 ---
 
-## 7. Evaluation  
+## Evaluation and Sensitivity Analysis
 
-How you checked whether the recommender behaved as expected. 
+### Tested Profiles & Terminal Outputs
+We subjected the recommender to three high-contrast test profiles: a High-Energy Workout profile, a Melancholic Acoustic profile, and an Adversarial Edge Case ("The Conflicted Subwoofer") with conflicting target metrics (high energy but high acousticness). 
 
-Prompts:  
+### Key Findings from the Sensitivity Experiment
+We ran a data experiment where we halved the categorical Genre weight from 2.0 to 1.0 and doubled the continuous Acousticness weight from 1.0 to 2.0. 
 
-- Which user profiles you tested  
-- What you looked for in the recommendations  
-- What surprised you  
-- Any simple tests or comparisons you ran  
+This architectural change dramatically altered the system's output behaviors:
+* **Before the change:** Categorical keywords acted as strict gatekeepers. The system suffered from a broad "filter bubble" flaw where a song matching a genre string automatically outranked sonically superior matches from other genres.
+* **After the change:** The system successfully broke out of its keyword limitation. In the adversarial test, it successfully prioritized *Chamber Wind* over *Subterranean* because it weighed the underlying acoustic structure of the song heavier than a simple "Techno" or "Classical" label. This proves that continuous vector proximity provides a much tighter grip on a user's actual sonic "vibe" than broad industry categories
 
-No need for numeric metrics unless you created some.
+### Comparative Profile Matrix
+* **Gym Profile vs. Acoustic Profile:** The algorithm responded accurately to explicit structural constraints. The Gym profile surfaced exclusively synthetic, high-tempo, non-acoustic tracks like *Gym Hero* and *Sunrise City*. Conversely, the Acoustic profile completely flipped the catalog orientation, favoring organic instrumentation like *Gravel Road* and tracking down ultra-low energy thresholds.
+* **The Conflicted Subwoofer Test (Adversarial Baseline):** Testing a user demanding a high-energy `techno` track with maximum `acousticness` highlighted a major system blindspot. Under standard settings, the engine prioritized the text match (*Subterranean*) despite its acoustic level being a near-zero 0.03. 
+
+### Insights from the Sensitivity Experiment
+By executing a sensitivity adjustment (halving the importance of categorical genres to 1.0 point and doubling acoustic vectors to 2.0 points), we successfully decoupled the engine from rigid keyword constraints. This change proved that a balance of mathematical features provides a more accurate representation of a musical "vibe" than broad, text-based genre definitions alone.
 
 ---
 

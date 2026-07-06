@@ -15,25 +15,44 @@ from src.recommender import load_songs, recommend_songs
 def main() -> None:
     songs = load_songs("data/songs.csv") 
 
-    # Starter example profile
-    user_prefs = {
-            "favorite_genre": "lofi",
-            "favorite_mood": "chill",
-            "target_energy": 0.35,
-            "target_valence": 0.55,
-            "target_acousticness": 0.80
+    test_profiles = {
+        "High-Energy Workout Fanatic": {
+            "favorite_genre": "pop",
+            "favorite_mood": "intense",
+            "target_energy": 0.95,
+            "target_valence": 0.80,
+            "target_acousticness": 0.05
+        },
+        "Melancholic Acoustic Introspective": {
+            "favorite_genre": "country",
+            "favorite_mood": "melancholic",
+            "target_energy": 0.30,
+            "target_valence": 0.25,
+            "target_acousticness": 0.90
+        },
+        "Adversarial Edge Case (The Conflicted Subwoofer)": {
+            "favorite_genre": "techno",
+            "favorite_mood": "serene",
+            "target_energy": 0.90,
+            "target_valence": 0.30,
+            "target_acousticness": 0.95 
         }
+    }
 
-    recommendations = recommend_songs(user_prefs, songs, k=5)
+    for profile_name, user_prefs in test_profiles.items():
+        print("-" * 50)
+        print(f"RUNNING EVALUATION FOR: {profile_name}")
+        print("-" * 50)
 
-    print("\nTop recommendations:\n")
-    for rec in recommendations:
-        # You decide the structure of each returned item.
-        # A common pattern is: (song, score, explanation)
-        song, score, explanation = rec
-        print(f"{song['title']} - Score: {score:.2f}")
-        print(f"Because: {explanation}")
-        print()
+        recommendations = recommend_songs(user_prefs, songs, k=3)
+
+        print("\nTop recommendations:\n")
+        for rec in recommendations:
+            song, score, explanation = rec
+            print(f"{song['title']} (by {song['artist']}) - Score: {score:.2f}")
+            print(f"Because: {explanation}")
+            print()
+        print("\n")
 
 
 if __name__ == "__main__":

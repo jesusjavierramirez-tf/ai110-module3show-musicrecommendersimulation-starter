@@ -79,25 +79,53 @@ You can add more tests in `tests/test_recommender.py`.
 Paste a sample of your recommender's output here as a text block so a reader can see what it produces:
 
 ```text
-Loaded songs: 17
+## 4. Evaluation Process & Observed Behavior
 
+### Test Profile Execution Results
+
+```text
+--------------------------------------------------
+RUNNING EVALUATION FOR: High-Energy Workout Fanatic
+--------------------------------------------------
 Top recommendations:
+Gym Hero (by Max Pulse) - Score: 5.47
+Because: genre match (+1.0), mood match (+1.0), energy proximity (+1.47), acoustic proximity (+2.00)
 
-Library Rain - Score: 5.44
-Because: genre match (+2.0), mood match (+1.0), energy proximity (+1.50), acoustic proximity (+0.94)
+Storm Runner (by Voltline) - Score: 4.34
+Because: mood match (+1.0), energy proximity (+1.44), acoustic proximity (+1.90)
 
-Midnight Coding - Score: 5.30
-Because: genre match (+2.0), mood match (+1.0), energy proximity (+1.40), acoustic proximity (+0.91)
+Sunrise City (by Neon Echo) - Score: 4.04
+Because: genre match (+1.0), energy proximity (+1.30), acoustic proximity (+1.74)
 
-Focus Flow - Score: 4.40
-Because: genre match (+2.0), energy proximity (+1.42), acoustic proximity (+0.98)
 
-Spacewalk Thoughts - Score: 3.27
-Because: mood match (+1.0), energy proximity (+1.40), acoustic proximity (+0.88)
+--------------------------------------------------
+RUNNING EVALUATION FOR: Melancholic Acoustic Introspective
+--------------------------------------------------
+Top recommendations:
+Gravel Road (by Whiskey Hound) - Score: 4.77
+Because: genre match (+1.0), mood match (+1.0), energy proximity (+1.23), acoustic proximity (+1.54)
 
-Coffee Shop Stories - Score: 2.38
-Because: energy proximity (+1.47), acoustic proximity (+0.91)
+Spacewalk Thoughts (by Orbit Bloom) - Score: 3.43
+Because: energy proximity (+1.47), acoustic proximity (+1.96)
+
+Coffee Shop Stories (by Slow Stereo) - Score: 3.38
+Because: energy proximity (+1.40), acoustic proximity (+1.98)
+
+
+--------------------------------------------------
+RUNNING EVALUATION FOR: Adversarial Edge Case (The Conflicted Subwoofer)
+--------------------------------------------------
+Top recommendations:
+Chamber Wind (by Echoes of Time) - Score: 3.48
+Because: mood match (+1.0), energy proximity (+0.48), acoustic proximity (+2.00)
+
+Coffee Shop Stories (by Slow Stereo) - Score: 2.58
+Because: energy proximity (+0.70), acoustic proximity (+1.88)
+
+Subterranean (by Deep Mind) - Score: 2.54
+Because: genre match (+1.0), energy proximity (+1.38), acoustic proximity (+0.16)
 ```
+
 **Screenshot or video** *(optional)*: <!-- Insert a screenshot or demo video link here -->
 
 ---
